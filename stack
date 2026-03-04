@@ -4,9 +4,9 @@ set -e
 apt update
 
 # General
-apt install -y software-properties-common xdotool gnome-characters flameshot htop xclip npm expect cheese rig chrome-gnome-shell pwgen nautilus-dropbox nemo virtualbox-qt rar unrar vlc composer  openssh-server kolourpaint filezilla gedit gimp git meld gnupg python3 apt-transport-https ca-certificates curl software-properties-common jq sublime-text copyq
+apt install -y software-properties-common xdotool gnome-characters flameshot htop xclip npm expect cheese rig chrome-gnome-shell pwgen nautilus-dropbox nemo rar unrar vlc composer  openssh-server kolourpaint filezilla gedit gimp git meld gnupg python3 apt-transport-https ca-certificates curl software-properties-common jq sublime-text copyq
 
-# Docker
+# Docker / Docker Compose
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu jammy stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update -y
@@ -19,11 +19,14 @@ sudo chown root:docker /var/run/docker.sock
 sudo chown -R root:docker /var/run/docker
 docker run hello-world
 
-# Install Docker Compose
-VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | jq -r .tag_name)
-sudo curl -L "https://github.com/docker/compose/releases/download/$VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-docker-compose --version
+# Install Node.js via 'n'
+sudo npm install -g n
+sudo n lts
+sudo ln -sf /usr/local/bin/node /usr/bin/node
+sudo ln -sf /usr/local/bin/npm /usr/bin/npm
+node -v
+npm -v
+
 
 read -p "All Done. Hit anything on <enter> key to exit. " X
 exit 0

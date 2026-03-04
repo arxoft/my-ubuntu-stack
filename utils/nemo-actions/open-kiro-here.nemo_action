@@ -1,0 +1,6 @@
+[Nemo Action]
+Name=Open in Kiro
+Comment=Open Kiro in this folder
+Exec=kiro "%F"
+Selection=any
+Extensions=dir;

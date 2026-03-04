@@ -1,0 +1,6 @@
+[Nemo Action]
+Name=Open in VS Code
+Comment=Open Visual Studio Code in this folder
+Exec=/home/asif/Workspaces/arxoft-stack/utils/nemo-actions/code "%F"
+Selection=any
+Extensions=dir;

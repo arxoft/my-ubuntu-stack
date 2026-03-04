@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+TARGET_DIR="${1:-.}"
+
+# Ensure absolute path
+TARGET_DIR="$(realpath "$TARGET_DIR")"
+
+ENV_FILE="$TARGET_DIR/.env"
+PROFILE_NAME=""
+
+if [[ -f "$ENV_FILE" ]]; then
+    # Extract VSCODE_PROFILE_NAME ignoring comments and spaces
+    PROFILE_NAME="$(grep -E '^VSCODE_PROFILE_NAME=' "$ENV_FILE" \
+        | tail -n1 \
+        | cut -d '=' -f2- \
+        | sed 's/^["'\'']//' \
+        | sed 's/["'\'']$//' \
+        | xargs || true)"
+fi
+
+if [[ -n "$PROFILE_NAME" ]]; then
+    echo "Opening $TARGET_DIR with VSCode profile: $PROFILE_NAME"
+    exec code --profile "$PROFILE_NAME" "$TARGET_DIR"
+else
+    echo "Opening $TARGET_DIR with default VSCode profile"
+    exec code "$TARGET_DIR"
+fi
