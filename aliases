@@ -19,6 +19,26 @@ git_branch() {
     fi
 }
 
+short_pwd() {
+    local p="${PWD}"
+
+    # Replace home with ~
+    [[ $p == "$HOME"* ]] && p="~${p#$HOME}"
+
+    IFS='/' read -ra parts <<< "$p"
+    local n=${#parts[@]}
+
+    if (( n <= 4 )); then
+        printf '%s' "$p"
+    else
+        printf '%s/%s/.../%s/%s' \
+            "${parts[0]}" \
+            "${parts[1]}" \
+            "${parts[n-2]}" \
+            "${parts[n-1]}"
+    fi
+}
+
 alias x='exit'
 alias rm='rm -i'
 alias cp='cp -i'
@@ -34,6 +54,8 @@ alias grepcss='grep -rni --include="*.css"'
 alias grepjs='grep -rni --include="*.js"'
 alias grep100='grep -rni --color=always -o ".\{0,100\}$1.\{0,100\}"'
 alias subl='subl -n'
+alias supabase='npx supabase'
+alias ws="/home/asif/Scripts/.bin/ws"
 
-PS1='\n\u \[\e[1;33m\][\w]\[\e[0m\] $(git_branch)\n\$ '
-
+# PS1='\n\u \[\e[1;33m\][\w]\[\e[0m\] $(git_branch)\n\$ '
+PS1='\n\u \[\e[1;33m\][$(short_pwd)]\[\e[0m\] $(git_branch)\n\$ '
